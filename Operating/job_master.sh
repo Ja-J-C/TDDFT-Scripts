@@ -43,37 +43,21 @@
 for ((i=101;i<=200;i++));do
 
 
-
         mkdir "td$i"
 
-cd "td$i"
+        cd "td$i"
 
-        scp /home/cjiang2/propane/td1/control.inp .
+        cp ../control.inp .
 
+        cp ../job_script.sh .
 
+        sed -i "s/ion_velocity_init_seed=3300/ion_velocity_init_seed=$((i+3300))/" control.inp
 
-        scp /home/cjiang2/propane/td1/job_script.sh .
+	    sed -i "s|#SBATCH --job-name=propane_td1|#SBATCH --job-name=propane_td$i|" job_script.sh
 
-
-
-
-
-
-
-       
-
-	sed -i "s/ion_velocity_init_seed=3300/ion_velocity_init_seed=$((i+3300))/" control.inp
-
-	sed -i "s|#SBATCH --job-name=propane_td1|#SBATCH --job-name=propane_td$i|" job_script.sh
-
-
-
-      
-
-	sbatch job_script.sh	
+        sbatch job_script.sh	
 
 	cd ..
-
 
 
 done
